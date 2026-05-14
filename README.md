@@ -83,8 +83,10 @@ Open `src/main/resources/application.properties` and update your MySQL credentia
 | `POST` | `/api/auth/login` | Authenticate and receive JWT |
 | `GET` | `/api/posts` | Fetch all social posts |
 | `POST` | `/api/posts` | Create a new post (Auth required) |
-
+| `GET`| `/swagger-ui/index.html#/`
 ---
+
+
 
 ## 📝 License
 Distributed under the MIT License. See `LICENSE` for more information.
