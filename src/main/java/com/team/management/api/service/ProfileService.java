@@ -1,5 +1,7 @@
 package com.team.management.api.service;
 
+import java.time.LocalDateTime;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -27,7 +29,7 @@ public class ProfileService {
                 .account(user)
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
-                .joinAt(request.getCreateTime())
+                .joinAt(LocalDateTime.now())
                 .photoUrl(request.getPhotoUrl())
                 .build();
         profileRepository.save(profile);

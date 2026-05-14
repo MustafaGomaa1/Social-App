@@ -1,6 +1,7 @@
 package com.team.management.api.DTO;
 
-import jakarta.validation.constraints.NotEmpty;
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,12 +14,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 
-public class ProfileRequest {
-
-    @NotEmpty
-    private String firstname;
-    @NotEmpty
-    private String lastname;
-    @NotEmpty
-    private String photoUrl;
+public class PostResponse {
+    private String content;
+    private LocalDateTime createAt;
+    private LocalDateTime updateAt;
 }

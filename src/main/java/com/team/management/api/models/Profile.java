@@ -3,6 +3,8 @@ package com.team.management.api.models;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -35,6 +37,7 @@ public class Profile {
     private String lastname;
     @Column(nullable = false)
     private String photoUrl;
+    @CreationTimestamp
     private LocalDateTime joinAt;
 
     @OneToOne
