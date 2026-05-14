@@ -101,4 +101,23 @@ public class PostService {
         }
         return "You Are Not Authorized To Delete This Post";
     }
+
+    public PaginationPosts userPaginationPosts(UserDetails userDetails, int pageNo, int pageSize) {
+        Profile profile = userRepository.findByUsername(userDetails.getUsername()).get().getProfile();
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<PostResponse> pagePosts = postRepository.findAllByProfile(profile, pageable)
+                .map(post -> PostResponse.builder()
+                        .content(post.getContent())
+                        .createAt(post.getCreateTime())
+                        .updateAt(post.getUpDateTime())
+                        .build());
+        return PaginationPosts.builder()
+                .posts(pagePosts.getContent())
+                .pageNo(pagePosts.getNumber())
+                .pageSize(pagePosts.getSize())
+                .totalElements(pagePosts.getTotalElements())
+                .totalPages(pagePosts.getTotalPages())
+                .last(pagePosts.isLast())
+                .build();
+    }
 }

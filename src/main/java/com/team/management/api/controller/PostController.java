@@ -57,6 +57,13 @@ public class PostController {
         return ResponseEntity.ok(postService.getAllPosts(pageNo, pageSize));
     }
 
+    @GetMapping("/pagination")
+    public ResponseEntity<PaginationPosts> alluserPosts(@AuthenticationPrincipal UserDetails userDetails,
+            @RequestParam(name = "pageNo", defaultValue = "0", required = true) int pageNo,
+            @RequestParam(name = "pageSize", required = true, defaultValue = "5") int pageSize) {
+        return ResponseEntity.ok(postService.userPaginationPosts(userDetails, pageNo, pageSize));
+    }
+
     @DeleteMapping("/delete/{postId}")
     public ResponseEntity<String> deletePost(@PathVariable("postId") Long id,
             @AuthenticationPrincipal UserDetails userDetails) {
