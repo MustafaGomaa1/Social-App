@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Profile</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="login-container">
+        <form class="login-form" id="profileForm" method="post" th:action="@{/api/v1/profile/}" th:object="${profile}">
+            <h2>Complete Profile</h2>
+            <p>Tell us a bit more about yourself.</p>
+            
+            <!-- Profile Preview Circle -->
+            <div class="profile-preview">
+                <img src="https://via.placeholder.com/100" id="previewImg" alt="Profile Preview">
+            </div>
+
+            <div class="input-group">
+                <input type="text" th:field="*{firstname}" id="firstName" required placeholder=" ">
+                <label for="firstName">First Name</label>
+            </div>
+
+            <div class="input-group">
+                <input type="text" th:field="*{lastname}" id="lastName" required placeholder=" ">
+                <label for="lastName">Last Name</label>
+            </div>
+
+            <div class="input-group">
+                <input type="url" th:field="*{photoUrl}" id="photoUrl" required placeholder=" ">
+                <label for="photoUrl">Photo URL (Link)</label>
+            </div>
+
+            <button type="submit" class="login-btn">Save Profile</button>
+        </form>
+    </div>
+    <script src="/js/script.js"></script>
+</body>
+</html>

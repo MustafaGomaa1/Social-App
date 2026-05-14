@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en"
+xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="login-container">
+        <form class="login-form" id="registerForm" method="post" th:action="@{/api/v1/auth/register/}" th:object="${user}">
+            <h2>Create Account</h2>
+            <p>Join us by filling out the info below.</p>
+            
+            <div class="input-group">
+                <input type="text" id="username" th:field="*{username}" required placeholder=" ">
+                <label for="username">Username</label>
+            </div>
+
+            <div class="input-group">
+                <input type="email" id="email" th:field="*{email}" required placeholder=" ">
+                <label for="email">Email Address</label>
+            </div>
+
+            <div class="input-group">
+                <input type="password" id="password" th:field="*{password}" required placeholder=" ">
+                <label for="password">Password</label>
+                <span class="toggle-password" id="togglePassword">👁️</span>
+            </div>
+
+            <button type="submit" class="login-btn">Register</button>
+
+            <div class="register-link">
+                Already have an account? <a th:href="@{/api/v1/auth/login}">Sign In</a>
+            </div>
+        </form>
+    </div>
+    <script src="/js/script.js"></script>
+</body>
+</html>
