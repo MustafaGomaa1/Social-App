@@ -4,10 +4,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.team.management.api.DTO.PaginationPosts;
 import com.team.management.api.DTO.PostRequest;
 import com.team.management.api.DTO.PostResponse;
 import com.team.management.api.models.Post;
@@ -48,15 +52,17 @@ public class PostService {
     public PostResponse updatePost(Long postId, PostRequest request, UserDetails userDetails) {
         Post post = postRepository.findById(postId).orElseThrow();
         Profile profile = userRepository.findByUsername(userDetails.getUsername()).get().getProfile();
-        post.setContent(request.getContent());
-        post.setUpDateTime(LocalDateTime.now());
-        postRepository.save(post);
-        profile.getPosts().add(post);
-        profileRepository.save(profile);
+        if (post.getProfile().equals(profile)) {
+            post.setContent(request.getContent());
+            post.setUpDateTime(LocalDateTime.now());
+            postRepository.save(post);
+            return PostResponse.builder()
+                    .content(post.getContent())
+                    .updateAt(post.getUpDateTime())
+                    .build();
+        }
         return PostResponse.builder()
-                .content(post.getContent())
-                .updateAt(post.getUpDateTime())
-                .build();
+                .content("You are not Authorized to Modify this Post").build();
     }
 
     public List<PostResponse> userPosts(UserDetails userDetails) {
@@ -67,5 +73,32 @@ public class PostService {
                 .createAt(post.getCreateTime())
                 .updateAt(post.getUpDateTime())
                 .build()).collect(Collectors.toList());
+    }
+
+    public PaginationPosts getAllPosts(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<PostResponse> pagePosts = postRepository.findAll(pageable).map(post -> PostResponse.builder()
+                .content(post.getContent())
+                .createAt(post.getCreateTime())
+                .updateAt(post.getUpDateTime())
+                .build());
+        return PaginationPosts.builder()
+                .pageNo(pagePosts.getNumber())
+                .pageSize(pagePosts.getSize())
+                .posts(pagePosts.getContent())
+                .totalElements(pagePosts.getTotalElements())
+                .totalPages(pagePosts.getTotalPages())
+                .last(pagePosts.isLast())
+                .build();
+    }
+
+    public String deletePost(Long id, UserDetails userDetails) {
+        Profile profile = userRepository.findByUsername(userDetails.getUsername()).get().getProfile();
+        Post post = postRepository.findById(id).get();
+        if (post.getProfile().equals(profile)) {
+            postRepository.delete(post);
+            return "Post Deleted";
+        }
+        return "You Are Not Authorized To Delete This Post";
     }
 }

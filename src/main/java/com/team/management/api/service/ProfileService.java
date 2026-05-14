@@ -59,5 +59,4 @@ public class ProfileService {
                 .photoUrl(user.getProfile().getPhotoUrl())
                 .build();
     }
-
 }
